@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>తెలుగు — English to Telugu Transliterator</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23c2410c'/><text y='.85em' font-size='62' x='50%' text-anchor='middle'>త</text></svg>" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=Noto+Sans+Telugu:wght@300;400;500;600&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Background decoration -->
+  <div class="bg-orb bg-orb-1"></div>
+  <div class="bg-orb bg-orb-2"></div>
+  <div class="bg-orb bg-orb-3"></div>
+
+  <div class="app-wrapper">
+
+    <!-- Header -->
+    <header class="header">
+      <div class="header-inner">
+        <div class="logo">
+          <span class="logo-telugu">తె</span>
+          <div class="logo-text">
+            <span class="logo-title">లిపి <em>Lipi</em></span>
+            <span class="logo-sub">English → Telugu Transliterator</span>
+          </div>
+        </div>
+        <div class="header-badge">
+          <span class="engine-dot"></span>
+          <span id="engine-label">AI Engine Ready</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main -->
+    <main class="main">
+
+      <!-- Settings Bar -->
+      <div class="settings-bar">
+        <div class="settings-left">
+          <label class="setting-item">
+            <span class="setting-label">Transliteration Engine</span>
+            <select id="engine-select" class="styled-select">
+              <option value="google">Google Input Tools</option>
+              <option value="claude" selected>Claude AI</option>
+              <option value="auto">Auto (Google → Claude fallback)</option>
+            </select>
+          </label>
+          <label class="setting-item">
+            <span class="setting-label">Suggestions</span>
+            <div class="toggle-wrap">
+              <input type="checkbox" id="suggestions-toggle" class="toggle-input" checked />
+              <label for="suggestions-toggle" class="toggle-label"></label>
+            </div>
+          </label>
+        </div>
+        <div class="settings-right">
+          <div class="api-key-wrap" id="api-key-section">
+            <input type="password" id="claude-api-key" placeholder="Claude API key (sk-ant-...)" class="api-input" />
+            <button class="btn-icon" id="btn-save-key" title="Save key" onclick="app.saveApiKey()">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Editor Area -->
+      <div class="editor-stack">
+
+        <!-- Input Panel -->
+        <div class="panel panel-input">
+          <div class="panel-header">
+            <div class="panel-label">
+              <span class="lang-flag">🇬🇧</span>
+              English
+              <span class="panel-hint">Type phonetically</span>
+            </div>
+            <div class="panel-actions">
+              <span class="char-count" id="input-count">0 chars · 0 words</span>
+              <button class="btn-action" id="btn-clear" title="Clear" onclick="app.clear()">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+                Clear
+              </button>
+            </div>
+          </div>
+          <div class="textarea-wrap">
+            <textarea
+              id="input-text"
+              class="editor-textarea"
+              placeholder="Type in English... e.g. 'nenu meeru telugu lo matladadam'"
+              spellcheck="false"
+              autocomplete="off"
+            ></textarea>
+            <!-- Suggestions dropdown -->
+            <div class="suggestions-box" id="suggestions-box"></div>
+          </div>
+        </div>
+
+        <!-- Divider with swap icon -->
+        <div class="panel-divider">
+          <div class="divider-line"></div>
+          <div class="divider-icon" id="status-icon">
+            <svg class="spin-icon hidden" id="loading-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>
+            <svg class="arrow-icon" id="ready-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
+          </div>
+          <div class="divider-line"></div>
+        </div>
+
+        <!-- Output Panel -->
+        <div class="panel panel-output">
+          <div class="panel-header">
+            <div class="panel-label">
+              <span class="lang-flag">🇮🇳</span>
+              తెలుగు · Telugu
+              <span class="panel-hint" id="output-engine-label">waiting…</span>
+            </div>
+            <div class="panel-actions">
+              <span class="char-count" id="output-count">0 chars · 0 words</span>
+              <button class="btn-action" id="btn-tts" title="Read aloud" onclick="app.speak()" disabled>
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+                Speak
+              </button>
+              <button class="btn-action" id="btn-download" title="Download audio" onclick="app.downloadAudio()" disabled>
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                Audio
+              </button>
+              <button class="btn-action btn-copy" id="btn-copy" title="Copy Telugu text" onclick="app.copy()">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                Copy
+              </button>
+            </div>
+          </div>
+          <div class="textarea-wrap">
+            <div
+              id="output-text"
+              class="editor-output"
+              aria-label="Telugu transliteration output"
+            ><span class="output-placeholder">తెలుగు అక్షరాలు ఇక్కడ కనిపిస్తాయి…</span></div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Tips -->
+      <div class="tips-bar">
+        <span class="tips-title">💡 Tips:</span>
+        <span class="tip">Type <kbd>nenu</kbd> → నేను</span>
+        <span class="tip-sep">·</span>
+        <span class="tip">Type <kbd>meeru</kbd> → మీరు</span>
+        <span class="tip-sep">·</span>
+        <span class="tip">Type <kbd>dhanyavadalu</kbd> → ధన్యవాదాలు</span>
+        <span class="tip-sep">·</span>
+        <span class="tip">Press <kbd>Space</kbd> to confirm a word</span>
+      </div>
+
+    </main>
+
+    <footer class="footer">
+      <span>Powered by <strong>Claude AI</strong> &amp; Google Input Tools</span>
+      <span class="footer-sep">·</span>
+      <span>Telugu script · తెలుగు లిపి</span>
+    </footer>
+
+  </div>
+
+  <!-- Toast -->
+  <div id="toast" class="toast"></div>
+
+  <script src="js/transliterator.js"></script>
+  <script src="js/tts.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
