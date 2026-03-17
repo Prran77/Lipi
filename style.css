@@ -27,11 +27,35 @@
   --font-body:   'Outfit', sans-serif;
   --font-telugu: 'Noto Sans Telugu', sans-serif;
   --font-serif:  'Lora', serif;
+  --surface:     #ffffff;
+  --on-saffron:  #ffffff;
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 html { font-size: 15px; scroll-behavior: smooth; }
+
+:root { color-scheme: light; }
+
+:root[data-theme='dark'] {
+  --cream:       #151312;
+  --cream2:      #1e1a18;
+  --warm-50:     #211d1a;
+  --warm-100:    #2e2722;
+  --warm-200:    #4a3b31;
+  --sand:        #8b735d;
+  --text:        #f5efe7;
+  --text-2:      #e9dfd3;
+  --text-3:      #c6b7a5;
+  --text-4:      #998777;
+  --border:      #3a312a;
+  --border2:     #4a3f36;
+  --shadow-sm:   0 1px 3px rgba(0,0,0,.45), 0 1px 2px rgba(0,0,0,.35);
+  --shadow-md:   0 8px 24px rgba(0,0,0,.45), 0 2px 6px rgba(0,0,0,.35);
+  --shadow-lg:   0 16px 38px rgba(0,0,0,.55), 0 4px 12px rgba(0,0,0,.4);
+  --surface:     #1d1917;
+  color-scheme: dark;
+}
 
 body {
   font-family: var(--font-body);
@@ -69,6 +93,19 @@ body {
   top: 50%; left: 50%;
   transform: translate(-50%, -50%);
   opacity: 0.12;
+}
+
+:root[data-theme='dark'] .bg-orb-1 {
+  background: radial-gradient(circle, #8d4a1f, transparent 70%);
+  opacity: 0.22;
+}
+:root[data-theme='dark'] .bg-orb-2 {
+  background: radial-gradient(circle, #6d5322, transparent 70%);
+  opacity: 0.18;
+}
+:root[data-theme='dark'] .bg-orb-3 {
+  background: radial-gradient(circle, #7a3f3f, transparent 70%);
+  opacity: 0.1;
 }
 
 /* ── App wrapper ── */
@@ -142,7 +179,7 @@ body {
   display: flex;
   align-items: center;
   gap: 7px;
-  background: white;
+  background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 20px;
   padding: 6px 12px;
@@ -170,7 +207,7 @@ body {
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  background: white;
+  background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 12px 18px;
@@ -239,7 +276,7 @@ body {
   content: '';
   position: absolute;
   width: 14px; height: 14px;
-  background: white;
+  background: var(--surface);
   border-radius: 50%;
   top: 3px; left: 3px;
   transition: transform 0.25s;
@@ -276,7 +313,7 @@ body {
   width: 30px; height: 30px;
   border-radius: var(--radius-sm);
   border: 1px solid var(--border);
-  background: white;
+  background: var(--surface);
   color: var(--text-3);
   cursor: pointer;
   transition: all 0.15s;
@@ -294,7 +331,7 @@ body {
 
 /* ── Panel ── */
 .panel {
-  background: white;
+  background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
   overflow: hidden;
@@ -350,7 +387,7 @@ body {
   padding: 5px 11px;
   border-radius: var(--radius-sm);
   border: 1px solid var(--border);
-  background: white;
+  background: var(--surface);
   color: var(--text-3);
   font-family: var(--font-body);
   font-size: 0.75rem;
@@ -370,13 +407,13 @@ body {
 }
 .btn-copy {
   background: var(--saffron);
-  color: white;
+  color: var(--on-saffron);
   border-color: var(--saffron);
 }
 .btn-copy:hover:not(:disabled) {
   background: var(--saffron-dk);
   border-color: var(--saffron-dk);
-  color: white;
+  color: var(--on-saffron);
 }
 .btn-copy.copied {
   background: #16a34a;
@@ -437,7 +474,7 @@ body {
 .divider-icon {
   width: 36px; height: 36px;
   border-radius: 50%;
-  background: white;
+  background: var(--surface);
   border: 1px solid var(--border);
   display: flex;
   align-items: center;
@@ -462,7 +499,7 @@ body {
   top: calc(100% - 8px);
   left: 20px;
   right: 20px;
-  background: white;
+  background: var(--surface);
   border: 1px solid var(--border2);
   border-radius: var(--radius-sm);
   box-shadow: var(--shadow-lg);
@@ -529,7 +566,7 @@ body {
 .tip { color: var(--text-3); }
 .tip-sep { color: var(--border2); }
 kbd {
-  background: white;
+  background: var(--surface);
   border: 1px solid var(--border2);
   border-radius: 4px;
   padding: 1px 5px;
@@ -566,7 +603,7 @@ kbd {
   left: 50%;
   transform: translateX(-50%) translateY(60px);
   background: var(--text);
-  color: white;
+  color: var(--on-saffron);
   font-size: 0.8rem;
   font-weight: 500;
   padding: 10px 20px;

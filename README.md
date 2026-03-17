@@ -15,6 +15,7 @@ A beautiful, modern web app for transliterating English (romanized) text into Te
 - **Audio download** — save transliteration as MP3 via Google TTS
 - **Copy to clipboard** with one click
 - **Character & word count** for both panels
+- **Dark mode toggle** with saved preference
 - **Phonetic fallback** — works offline with built-in rule-based engine
 - Beautiful warm saffron / cultural aesthetic design
 

@@ -10,6 +10,7 @@ const app = (() => {
     inputText: '',
     outputText: '',
     engine: 'claude',
+    theme: 'light',
     suggestionsEnabled: true,
     apiKey: '',
     isLoading: false,
@@ -35,6 +36,7 @@ const app = (() => {
   const outputLabel = () => $('output-engine-label');
   const inputCount  = () => $('input-count');
   const outputCount = () => $('output-count');
+  const themeToggle = () => $('theme-toggle');
   const btnTTS      = () => $('btn-tts');
   const btnDownload = () => $('btn-download');
   const btnDelete   = () => $('btn-delete');
@@ -44,9 +46,13 @@ const app = (() => {
     // Restore saved settings
     state.apiKey = localStorage.getItem('lipi_claude_key') || '';
     state.engine = localStorage.getItem('lipi_engine') || 'claude';
+    const savedTheme = localStorage.getItem('lipi_theme');
+    state.theme = savedTheme || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
 
     if (state.apiKey) apiKeyEl().value = state.apiKey;
     engineSel().value = state.engine;
+    themeToggle().checked = state.theme === 'dark';
+    applyTheme(state.theme);
     updateEngineLabel();
 
     // Bind events
@@ -62,7 +68,26 @@ const app = (() => {
       state.suggestionsEnabled = sugToggle().checked;
       if (!state.suggestionsEnabled) closeSuggestions();
     });
+    themeToggle().addEventListener('change', () => {
+      state.theme = themeToggle().checked ? 'dark' : 'light';
+      localStorage.setItem('lipi_theme', state.theme);
+      applyTheme(state.theme);
+    });
     apiKeyEl().addEventListener('keydown', e => { if (e.key === 'Enter') saveApiKey(); });
+
+    if (!savedTheme) {
+      const media = window.matchMedia('(prefers-color-scheme: dark)');
+      const onSchemeChange = (e) => {
+        state.theme = e.matches ? 'dark' : 'light';
+        themeToggle().checked = state.theme === 'dark';
+        applyTheme(state.theme);
+      };
+      if (typeof media.addEventListener === 'function') {
+        media.addEventListener('change', onSchemeChange);
+      } else if (typeof media.addListener === 'function') {
+        media.addListener(onSchemeChange);
+      }
+    }
 
     // Close suggestions on outside click
     document.addEventListener('click', e => {
@@ -94,6 +119,10 @@ const app = (() => {
     engineLabel().textContent = labels[state.engine] || 'Ready';
     $('api-key-section').style.display =
       (state.engine === 'google') ? 'none' : 'flex';
+  }
+
+  function applyTheme(theme) {
+    document.documentElement.setAttribute('data-theme', theme);
   }
 
   // ─── Input handler ─────────────────────────────────────────────────────────
